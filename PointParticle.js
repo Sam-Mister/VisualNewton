@@ -1,8 +1,9 @@
 class PointParticle{
-  constructor(x,y,v_x,v_y,mass){
+  constructor(x,y,v_x,v_y,mass,id){
     this.pos = {x : x , y : y};
     this.vel = {v_x : v_x , v_y : v_y};
     this.mass = mass;
+    this.id = id;
   }
 updatePos = function(newX, newY){
   this.pos.x = newX;

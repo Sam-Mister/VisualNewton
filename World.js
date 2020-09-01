@@ -1,5 +1,7 @@
 class World{
-  constructor(){
+  constructor(timeStep){
+    this.timeStep = timeStep;
+    this.currentTime = 0;
     this.WorldObjects = [];
   };
 
@@ -10,4 +12,9 @@ class World{
     this.WorldObjects.splice(index, 1);
   };
 
+  updateWorld = function(){
+    for (var object of this.WorldObjects){
+      //will update objects in the world and incriment the time step
+    }
+  };
 }
