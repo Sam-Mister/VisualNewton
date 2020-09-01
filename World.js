@@ -1,9 +1,13 @@
 class World{
   constructor(){
     this.WorldObjects = [];
-  }
+  };
 
-  this.addobject = function(object){
+  addobject = function(object){
     this.WorldObjects.push(object);
-  }
+  };
+  removeobject = function(index){
+    this.WorldObjects.splice(index, 1);
+  };
+
 }
