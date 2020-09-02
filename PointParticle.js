@@ -1,18 +1,16 @@
 class PointParticle{
   constructor(x,y,v_x,v_y,mass,id){
-    this.pos = {x : x , y : y};
-    this.vel = {v_x : v_x , v_y : v_y};
+    this.pos = new Vector(x,y);
+    this.vel = new Vector(v_x,v_y);
     this.mass = mass;
     this.id = id;
   }
-updatePos = function(newX, newY){
-  this.pos.x = newX;
-  this.pos.y = newY;
+updatePos = function(newPos){
+  this.pos = Vector.add(this.pos,newPos);
 }
 
-updateVel = function(newVX, newVY){
-  this.vel.v_x = newVX;
-  this.vel.v_y = newVY;
+updateVel = function(newVel){
+  this.vel = Vector.add(this.vel,newVel);
 }
 
 }
