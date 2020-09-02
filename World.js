@@ -2,19 +2,28 @@ class World{
   constructor(timeStep){
     this.timeStep = timeStep;
     this.currentTime = 0;
-    this.WorldObjects = [];
+    this.WorldObjects = {};
+    this.running = false;
   };
 
   addobject = function(object){
-    this.WorldObjects.push(object);
+    this.WorldObjects[object.id] = object;
   };
-  removeobject = function(index){
-    this.WorldObjects.splice(index, 1);
+  removeobject = function(id){
+    delete this.WorldObjects[id];
   };
 
   updateWorld = function(){
-    for (var object of this.WorldObjects){
-      //will update objects in the world and incriment the time step
+    for (var key in this.WorldObjects){
+
+    }
+    this.currentTime += this.timeStep
+  };
+
+  RunWorld = function(){
+    this.running = toggle(this.running);
+    while (this.running === true) {
+      this.updateWorld();
     }
   };
 }
