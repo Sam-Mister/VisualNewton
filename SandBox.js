@@ -1,14 +1,14 @@
 var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
-canvas.width = 500  //sets the height and width of the canvas
-canvas.height = 500;
+canvas.width = 1000  //sets the height and width of the canvas
+canvas.height = 800;
 c.translate(canvas.width/2,canvas.height/2)
-world = new World(1);
+world = new World(1,-1*canvas.width/2,canvas.width/2, -1*canvas.height/2,canvas.height/2);
 
 class Circle{
-  constructor(x,y,v_x,v_y,mass,id){
-    this.particle = new PointParticle(x,y,v_x,v_y,mass,id)
-    this.radius = 10;
+  constructor(x,y,v_x,v_y,mass,id,res){
+    this.radius = Math.sqrt(mass);
+    this.particle = new PointParticle(x,y,v_x,v_y,mass,id,this.radius,res)
   }
 
   draw = function(){
@@ -22,18 +22,40 @@ class Circle{
   }
 }
 
-p1_render = new Circle(0,0,0,0,100,"Particle_1")
+p1_render = new Circle(0,-50,0.5,0,100,"Particle_1",0.9)
 world.addobject(p1_render.particle);
-p2_render = new Circle(0,100,1,0,10,"Particle_2")
+p2_render = new Circle(0,50,-0.5,0,100,"Particle_2",0.9)
 world.addobject(p2_render.particle);
+p3_render = new Circle(50,0,0,0.5,100,"Particle_3",0.9)
+world.addobject(p3_render.particle);
+p4_render = new Circle(-50,0,0,-0.5,100,"Particle_4",0.9)
+world.addobject(p4_render.particle);
+
+let particleArr = [];
+let clicker = 0
+canvas.addEventListener('click', function(e){
+  let mouse = {x: (e.x - canvas.width/2), y: (e.y - canvas.height/2)}
+  let Pholder = new Circle(mouse.x,mouse.y,1,0.5,200,"swarm"+clicker,0.9)
+  particleArr.push(Pholder)
+  world.addobject(Pholder.particle);
+  clicker++
+})
+
 
 
 
 function refresh() {																														//This refresh function controls the animation loop.
 	requestAnimationFrame(refresh);
 	c.clearRect(-canvas.width/2,-canvas.height/2,canvas.width, canvas.height);
+
   p1_render.update();
   p2_render.update();
+  p3_render.update();
+  p4_render.update();
+
+  for (var i = 0; i<particleArr.length; i++){
+    particleArr[i].update();
+  }
   world.updateWorld();																//Clear the page each frame
 }
 refresh();
