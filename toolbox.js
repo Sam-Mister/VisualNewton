@@ -57,8 +57,7 @@ class Vector{                                                                   
   static unitVectorBetween(Vec1,Vec2){
     if(Vec1 instanceof Vector && Vec2 instanceof Vector){
       let difference = Vector.subtract(Vec1,Vec2);
-      let normalise = 1/Math.sqrt(Vector.lengthSquared(difference));
-      difference.multiply(normalise)
+			difference.normalise();
       return difference
     }else{
       console.log("unitVectorBetween takes 2 vector objects");
@@ -73,6 +72,21 @@ class Vector{                                                                   
       console.log("distance takes 2 vector objects");
     }
   }
+
+	static dot(Vec1,Vec2){
+		if(Vec1 instanceof Vector && Vec2 instanceof Vector){
+      let dot = Vec1.x*Vec2.x + Vec1.y*Vec2.y
+      return dot
+    }else{
+      console.log("dot takes 2 vector objects");
+    }
+	}
+
+	normalise = function(){
+		let length = Math.sqrt(this.x**2 + this.y**2);
+		this.x = this.x * (1/length);
+		this.y = this.y * (1/length);
+	}
 
 
 }
