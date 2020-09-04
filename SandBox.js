@@ -3,7 +3,15 @@ var c = canvas.getContext('2d');
 canvas.width = 1000  //sets the height and width of the canvas
 canvas.height = 800;
 c.translate(canvas.width/2,canvas.height/2)
-world = new World(1,-1*canvas.width/2,canvas.width/2, -1*canvas.height/2,canvas.height/2);
+
+properties = {timestep : 1, x_min : -1*canvas.width/2, x_max : canvas.width/2, y_min : -1*canvas.height/2, y_max : canvas.height/2,
+  BoundaryConditions : "solid",
+  TwoBodyForces : true,
+  NewtonGravity : true,
+  UniformGravity : false,
+};
+
+world = new World(properties);
 
 class Circle{
   constructor(x,y,v_x,v_y,mass,id,res){
@@ -24,6 +32,7 @@ class Circle{
 
 p1_render = new Circle(0,-50,0.5,0,100,"Particle_1",0.9)
 world.addobject(p1_render.particle);
+
 p2_render = new Circle(0,50,-0.5,0,100,"Particle_2",0.9)
 world.addobject(p2_render.particle);
 p3_render = new Circle(50,0,0,0.5,100,"Particle_3",0.9)
@@ -35,7 +44,7 @@ let particleArr = [];
 let clicker = 0
 canvas.addEventListener('click', function(e){
   let mouse = {x: (e.x - canvas.width/2), y: (e.y - canvas.height/2)}
-  let Pholder = new Circle(mouse.x,mouse.y,1,0.5,200,"swarm"+clicker,0.9)
+  let Pholder = new Circle(mouse.x,mouse.y,0,0,200,"swarm"+clicker,0.9)
   particleArr.push(Pholder)
   world.addobject(Pholder.particle);
   clicker++
