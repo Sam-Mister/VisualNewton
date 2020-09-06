@@ -1,32 +1,39 @@
 let particleArr = [];
 let clicker = 0
-let button1;
-let button2;
+let Button1;
+let Button2;
+let Button3;
 let cnv;
 let MassSlider;
+let Playing = false;
 
 function setup() {
-  cnv = createCanvas(800, 600);
+  cnv = createCanvas(800, window.innerHeight);
   cnv.mouseClicked(addParticle);
+  cnv.position((window.innerWidth/2 - canvas.width/2),0)
   properties = {timestep : 1, x_min : -1*canvas.width/2, x_max : canvas.width/2, y_min : -1*canvas.height/2, y_max : canvas.height/2,
-    BoundaryConditions : "Periodic",
+    BoundaryConditions : "solid",
     TwoBodyForces : true,
     NewtonGravity : true,
     UniformGravity : false,
   };
 
-  world = new World(properties);
+  World = new World(properties);
 
-  button1 = createButton('Gravity');
-  button1.position(820,50);
-  button1.mousePressed(GravChange);
+  Button1 = createButton('Gravity');
+  Button1.position(1400,50);
+  Button1.mousePressed(GravChange);
 
-  button2 = createButton('Forces');
-  button2.position(820,100);
-  button2.mousePressed(ForceChange);
+  Button2 = createButton('Forces');
+  Button2.position(1400,100);
+  Button2.mousePressed(ForceChange);
+
+  Button3 = createButton('Play/Pause');
+  Button3.position(1400,150);
+  Button3.mousePressed(PlayWorld);
 
   MassSlider = createSlider(50,500,100);
-  MassSlider.position(820,150)
+  MassSlider.position(1400,200)
 }
 
 function draw() {
@@ -35,22 +42,36 @@ function draw() {
   for (var i = 0; i < particleArr.length; i++){
     particleArr[i].update();
   }
-  world.updateWorld();
+  if (Playing){
+    AdvanceWorld();
+  }
+
 }
 
 function addParticle(){
   let mass = MassSlider.value();
-  let Pholder = new Circle((mouseX-canvas.width/2),(mouseY - canvas.height/2),0,0,mass,"swarm"+clicker,0.9)
+  let Pholder = new Circle((mouseX-canvas.width/2),(mouseY - canvas.height/2),0,0,mass,"swarm"+clicker,0.8)
   particleArr.push(Pholder)
-  world.addobject(Pholder.particle);
+  World.addobject(Pholder.particle);
   clicker++
 }
 function GravChange(){
-  world.UniformGravity = toggle(world.UniformGravity);
+  World.UniformGravity = toggle(world.UniformGravity);
 }
 
 function ForceChange(){
-  world.TwoBodyForces = toggle(world.TwoBodyForces);
+  World.TwoBodyForces = toggle(world.TwoBodyForces);
+}
+
+function PlayWorld(){
+  Playing = toggle(Playing);
+}
+
+function AdvanceWorld(){
+  let n = 1/properties.timestep;
+  for (var i = 0; i < n; i++){
+    World.updateWorld();
+  }
 }
 
 class Circle{
