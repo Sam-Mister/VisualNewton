@@ -1,10 +1,12 @@
 //This file contains useful functions to be used throughout the library
-function toggle(item){																														//Toggles the truth value of a variable
+/*Toggles the truth value of a variable*/
+function toggle(item){
 	item === true ? item = false : item = true
 	return item
 }
 
-class Vector{                                                                   //Creating a Vector Class to handle data
+/*Creating a Vector Class to handle data*/
+class Vector{                             
   constructor(x,y){
     this.x = x;
     this.y = y;
