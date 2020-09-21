@@ -1,11 +1,7 @@
-class PointParticle{
+class PointParticle extends StaticParticle{
   constructor(x,y,v_x,v_y,mass,id,radius,restitution){
-    this.pos = new Vector(x,y);
+    super(x,y,mass,id,radius,restitution);
     this.vel = new Vector(v_x,v_y);
-    this.mass = mass;
-    this.id = id;
-    this.radius = radius;
-    this.restitution = restitution;
   }
 updatePos = function(newPos){
   this.pos = Vector.add(this.pos,newPos);

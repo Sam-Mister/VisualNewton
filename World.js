@@ -66,6 +66,7 @@ this will be updated to a more accurate method like the modified euler method or
   ObjectUpdater = function(){
     for (var key in this.WorldObjects){
       let obj1 = this.WorldObjects[key]
+      if (obj1 instanceof PointParticle){
       obj1.vel.multiply(this.timeStep)
       obj1.updatePos(obj1.vel)
 
@@ -85,7 +86,7 @@ this will be updated to a more accurate method like the modified euler method or
         let CurrentAccel = Vector.multiply(CurrentTotalForce,InverseMass);
         let VelUpdater = Vector.multiply(CurrentAccel,this.timeStep);
         obj1.updateVel(VelUpdater)
-
+      }
     }
   }
 /*
