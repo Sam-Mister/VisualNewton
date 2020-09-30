@@ -32,11 +32,13 @@ class World{
 /*This method can be called to add an objects to the world*/
   addobject = function(object){
     this.WorldObjects[object.id] = object;
+    this.WorldObjects[object.id].inWorld = true
   };
   /*This method can be called to remove an object form the world. It has to be given an id
     to identify the object to be removed
   */
   removeobject = function(id){
+    this.WorldObjects[id].inWorld = false
     delete this.WorldObjects[id];
   };
   /*This function calculates the newtownian gravity force between two objects in the world*/
@@ -104,6 +106,7 @@ will be done by adding a object type check.
       for (var key2 in this.WorldObjects){
         if (key === key2){ continue; }
         let obj2 = this.WorldObjects[key2];
+        if (obj1.type === "PointParticle" && obj2.type === "PointParticle"){
         let sep = Math.sqrt(Vector.distanceSqua(obj1.pos,obj2.pos))
         if (sep <= obj1.radius + obj2.radius){
           let CollisionDirection = Vector.subtract(obj2.pos,obj1.pos)
@@ -120,10 +123,26 @@ will be done by adding a object type check.
           obj1.updateVel(Obj1VelUpdater);
           obj2.updateVel(Obj2VelUpdater);
         }
+      } else if (obj1.type === "PointParticle" && obj2.type === "StaticParticle"){
+        let sep = Math.sqrt(Vector.distanceSqua(obj1.pos,obj2.pos))
+        if (sep <= obj1.radius + obj2.radius){
+          this.removeobject(obj1.id)
+          /*let CollisionDirection = Vector.subtract(obj2.pos,obj1.pos)
+          CollisionDirection.normalise();
+          let CollisionVelocity = obj1.vel;
+          let speed = Vector.dot(CollisionVelocity,CollisionDirection);
+          let e = Math.min(obj1.restitution, obj2.restitution)
+          if (speed < 0){
+            break;
+          }
+          let impulse = 2* speed / (obj1.mass + obj2.mass)
+          let Obj1VelUpdater = Vector.multiply(CollisionDirection,(-1 * impulse * obj2.mass * e * this.timeStep));
+          obj1.updateVel(Obj1VelUpdater);*/
+        }
       }
     }
   }
-
+}
 /* This whole section needs to be rewritten*/
   BoundaryCollision = function(){
     let obj;
@@ -148,7 +167,7 @@ will be done by adding a object type check.
                obj.pos.y = this.y_max - obj.radius;
                obj.vel.y = -Math.abs(obj.vel.y) * obj.restitution * this.timeStep;
            }
-       }else{
+       }else if(this.BoundaryConditions === "periodic"){
          if (obj.pos.x < this.x_min + obj.radius){
              obj.pos.x = this.x_max - obj.radius;
          }else if (obj.pos.x > this.x_max - obj.radius){
@@ -161,7 +180,7 @@ will be done by adding a object type check.
          } else if (obj.pos.y > this.y_max - obj.radius){
              obj.pos.y = this.y_min + obj.radius;
          }
-       }
+       }else{}
      }
   }
   updateWorld = function(){

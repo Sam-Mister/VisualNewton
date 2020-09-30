@@ -5,5 +5,7 @@ class StaticParticle{
     this.id = id;
     this.radius = radius;
     this.restitution = restitution;
+    this.type = "StaticParticle"
+    this.inWorld = false
   }
 }
